@@ -81,8 +81,8 @@ html {
 
 /* Background image */
 .hero {
-  background: url("https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=1950&q=80")
-    no-repeat center center/cover;
+  background: url("https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=1950&q=80") no-repeat center center;
+  background-size: cover;
   height: 100vh;
   display: flex;
   align-items: center;
@@ -106,7 +106,7 @@ html {
 
 /* Shared page background (use on about/contact sections) */
 .page-bg {
-  background: url("https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=1950&q=80") no-repeat center center/cover;
+  background: url("https://images.unsplash.com/photo-1505761671935-60b3a7427bad?auto=format&fit=crop&w=1950&q=80") no-repeat center center;
   background-size: cover;
   position: relative;
   color: white;
@@ -188,7 +188,8 @@ html {
 .contact {
   text-align: center;
   padding: 60px 20px;
-  background: url("images/contact-bg.jpg") no-repeat center center/cover;
+  background: url("images/contact-bg.jpg") no-repeat center center;
+  background-size: cover;
   color: white;
 }
 
