@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,24 +9,31 @@
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
+
 <body>
   <!-- Navbar -->
   <nav class="navbar">
     <div class="logo">
-      <i class="fas fa-plane"></i> TravelBloom
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/airplane-take-off.png" alt="Logo">
+      TravelBloom
     </div>
-    <ul class="nav-links">
-      <li><a href="travel_recommendation.html">Home</a></li>
+    <ul>
+      <li><a href="home.html">Home</a></li>
       <li><a href="about.html">About Us</a></li>
-      <li><a href="contact.html" class="active">Contact Us</a></li>
+      <li><a href="contact.html">Contact Us</a></li>
     </ul>
+    <div class="search-container">
+      <input id="searchInput" type="text" placeholder="Enter a destination or keyword" aria-label="Search destinations">
+      <button id="searchBtn" class="search-btn">Search</button>
+      <button id="clearBtn" class="clear-btn" type="button">Reset</button>
+    </div>
   </nav>
 
   <!-- Contact Section -->
   <section class="contact">
     <h1>CONTACT US</h1>
     <p>Get in touch</p>
-    
+
     <form class="contact-form">
       <label for="name">Name</label>
       <input type="text" id="name" name="name" placeholder="Your name" required>
@@ -51,4 +59,5 @@
     <p>&copy; 2024 TravelBloom. All rights reserved.</p>
   </footer>
 </body>
+
 </html>
