@@ -21,13 +21,14 @@
       <li><a href="contact.html">Contact Us</a></li>
     </ul>
     <div class="search-container">
-      <input type="text" placeholder="Enter a destination or keyword">
-      <button class="search-btn">Search</button>
-      <button class="clear-btn">Clear</button>
+      <input id="searchInput" type="text" placeholder="Enter a destination or keyword" aria-label="Search destinations">
+      <button id="searchBtn" class="search-btn">Search</button>
+      <button id="clearBtn" class="clear-btn" type="button">Reset</button>
     </div>
   </nav>
 
     <!-- Recommendation Results Section -->
+    <div id="recommendation-results" aria-live="polite"></div>
     <div id="results"></div>
     
 
@@ -45,6 +46,8 @@
       <button>BOOK NOW</button>
     </div>
   </section>
+</script>
   <script src="https://kit.fontawesome.com/yourkitid.js" crossorigin="anonymous"></script>
+  <script src="travel_recommendation.js"></script>
 </body>
 </html>

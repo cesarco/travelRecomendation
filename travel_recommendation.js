@@ -1,181 +1,144 @@
-// Seleccionamos el contenedor donde mostraremos los resultados
-const resultsContainer = document.getElementById("recommendation-results");
+// travel_recommendation.js - versión limpia y consolidada
+document.addEventListener('DOMContentLoaded', () => {
+  // Selectores únicos y descriptivos
+  const recommendationResultsContainer = document.getElementById('recommendation-results');
+  const searchInput = document.getElementById('searchInput');
+  const searchBtn = document.getElementById('searchBtn');
+  const clearBtn = document.getElementById('clearBtn');
+  const resultsDiv = document.getElementById('results');
 
-// Función para cargar datos del JSON
-async function loadRecommendations() {
-  try {
-    const response = await fetch("travel_recommendation_api.json");
-    if (!response.ok) {
-      throw new Error(`Error al cargar JSON: ${response.status}`);
+  let travelData = null; // contendrá el JSON completo
+
+  // Carga inicial de datos
+  async function loadRecommendations() {
+    try {
+      const res = await fetch('travel_recommendation_api.json');
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      travelData = data;
+      console.log('Datos cargados:', travelData);
+      displayRecommendations(data);
+    } catch (err) {
+      console.error('Error al cargar JSON:', err);
+      if (resultsDiv) resultsDiv.innerHTML = '<p>Error al cargar datos.</p>';
     }
-
-    const data = await response.json();
-
-    // Verificamos en consola que sí llegan los datos
-    console.log("Datos de recomendaciones:", data);
-
-    // Mostramos los resultados
-    displayRecommendations(data);
-  } catch (error) {
-    console.error("Error al obtener los datos:", error);
   }
-}
 
-// Función para renderizar las recomendaciones en el DOM
-function displayRecommendations(data) {
-  resultsContainer.innerHTML = ""; // Limpiamos el contenedor
+  // Render principal (se muestran tarjetas en #recommendation-results)
+  function displayRecommendations(data) {
+    if (!recommendationResultsContainer) return;
+    recommendationResultsContainer.innerHTML = '';
 
-  // Mostrar países y sus ciudades
-  data.countries.forEach(country => {
-    country.cities.forEach(city => {
-      createCard(city);
+    // Ciudades dentro de países
+    (data.countries || []).forEach(country => {
+      (country.cities || []).forEach(city => createRecommendationCard(city));
     });
-  });
 
-  // Mostrar templos
-  data.temples.forEach(temple => {
-    createCard(temple);
-  });
+    // Templos y playas
+    (data.temples || []).forEach(t => createRecommendationCard(t));
+    (data.beaches || []).forEach(b => createRecommendationCard(b));
+  }
 
-  // Mostrar playas
-  data.beaches.forEach(beach => {
-    createCard(beach);
-  });
-}
+  function createRecommendationCard(place) {
+    if (!recommendationResultsContainer) return;
+    const card = document.createElement('div');
+    card.className = 'recommendation-card';
 
-// Función para crear una tarjeta de recomendación
-function createCard(place) {
-  const card = document.createElement("div");
-  card.classList.add("recommendation-card");
+    const imgSrc = (place.imageUrl && !place.imageUrl.includes('enter_your_image')) ? place.imageUrl : 'https://via.placeholder.com/320x200?text=No+Image';
 
-  card.innerHTML = `
-    <img src="${place.imageUrl}" alt="${place.name}" class="recommendation-img"/>
-    <h3>${place.name}</h3>
-    <p>${place.description}</p>
-  `;
+    card.innerHTML = `
+      <img src="${imgSrc}" alt="${place.name || ''}" class="recommendation-img"/>
+      <h3>${place.name || 'Sin nombre'}</h3>
+      <p>${place.description || ''}</p>
+    `;
 
-  resultsContainer.appendChild(card);
-}
+    recommendationResultsContainer.appendChild(card);
+  }
 
-// Llamamos a la función al cargar la página
-loadRecommendations();
+  // Obtiene un array plano con todos los lugares (playas, templos y ciudades)
+  function getAllPlaces() {
+    const out = [];
+    if (!travelData) return out;
 
+    (travelData.beaches || []).forEach(p => out.push({ ...p, type: 'beach' }));
+    (travelData.temples || []).forEach(p => out.push({ ...p, type: 'temple' }));
+    (travelData.countries || []).forEach(country => {
+      (country.cities || []).forEach(city => out.push({ ...city, type: 'city', country: country.name }));
+    });
 
-// Attach event listener to Search button
-document.getElementById("searchBtn").addEventListener("click", function () {
-    const searchInput = document.getElementById("searchInput").value.trim().toLowerCase(); // normalize input
-    let keyword = "";
+    return out;
+  }
 
-    // Handle variations of keywords
-    if (searchInput.includes("beach") || searchInput.includes("beaches")) {
-        keyword = "beach";
-    } else if (searchInput.includes("temple") || searchInput.includes("temples")) {
-        keyword = "temple";
-    } else if (searchInput.includes("country") || searchInput.includes("countries")) {
-        keyword = "country";
+  // Renderiza resultados de búsqueda en #results
+  function renderSearchResults(items) {
+    if (!resultsDiv) return;
+    resultsDiv.innerHTML = '';
+
+    if (!items || items.length === 0) {
+      resultsDiv.innerHTML = '<p>No se encontraron resultados para esa búsqueda.</p>';
+      return;
     }
 
-    if (keyword) {
-        // Call function to display filtered results
-        displayResults(keyword);
-    } else {
-        alert("No matching results. Please try 'beach', 'temple', or 'country'.");
+    items.slice(0, 8).forEach(place => {
+      const card = document.createElement('div');
+      card.className = 'card';
+      const imgSrc = (place.imageUrl && !place.imageUrl.includes('enter_your_image')) ? place.imageUrl : 'https://via.placeholder.com/320x200?text=No+Image';
+      card.innerHTML = `
+        <img src="${imgSrc}" alt="${place.name || ''}" />
+        <h3>${place.name || ''}</h3>
+        <p>${place.description || ''}</p>
+      `;
+      resultsDiv.appendChild(card);
+    });
+  }
+
+  // Lógica de búsqueda: reconoce palabras clave y búsqueda libre por nombre/descr.
+  function performSearch(raw) {
+    const q = (raw || '').toLowerCase().trim();
+    if (!q) {
+      resultsDiv.innerHTML = '<p>Por favor ingresa un término de búsqueda.</p>';
+      return;
     }
+
+    const all = getAllPlaces();
+
+    // Keywords comunes en inglés y español
+    if (q.includes('beach') || q.includes('beaches') || q.includes('playa') || q.includes('playas')) {
+      const beaches = all.filter(p => p.type === 'beach');
+      renderSearchResults(beaches.length >= 2 ? beaches.slice(0, 2) : beaches);
+      return;
+    }
+    if (q.includes('temple') || q.includes('temples') || q.includes('templo') || q.includes('templos')) {
+      const temples = all.filter(p => p.type === 'temple');
+      renderSearchResults(temples.length >= 2 ? temples.slice(0, 2) : temples);
+      return;
+    }
+    if (q.includes('country') || q.includes('countries') || q.includes('país') || q.includes('pais')) {
+      // Mostrar ciudades pertenecientes a países (al menos 2 cuando existan)
+      const cities = all.filter(p => p.type === 'city');
+      renderSearchResults(cities.length >= 2 ? cities.slice(0, 2) : cities);
+      return;
+    }
+
+    // Búsqueda libre por nombre o descripción
+    const matched = all.filter(p => {
+      const name = (p.name || '').toLowerCase();
+      const desc = (p.description || '').toLowerCase();
+      return name.includes(q) || desc.includes(q) || (p.country || '').toLowerCase().includes(q);
+    });
+
+    renderSearchResults(matched);
+  }
+
+  function clearResults() {
+    if (resultsDiv) resultsDiv.innerHTML = '';
+    if (searchInput) searchInput.value = '';
+  }
+
+  // Listeners
+  if (searchBtn) searchBtn.addEventListener('click', () => performSearch(searchInput.value));
+  if (clearBtn) clearBtn.addEventListener('click', clearResults);
+
+  // Inicialización
+  loadRecommendations();
 });
-
-// Example function to display results (you will connect this to your JSON data)
-function displayResults(keyword) {
-    console.log("Searching for:", keyword);
-    // Example: filter JSON results and display dynamically
-    fetch("travel_recommendation_api.json")
-        .then(response => response.json())
-        .then(data => {
-            let results = [];
-            
-            if (keyword === "beach") {
-                results = data.beaches;
-            } else if (keyword === "temple") {
-                results = data.temples;
-            } else if (keyword === "country") {
-                results = data.countries;
-            }
-
-            console.log("Results:", results);
-            // TODO: write code to render results into your page
-        })
-        .catch(error => console.error("Error fetching JSON:", error));
-}
-
-
-// Al cargar el DOM
-document.addEventListener("DOMContentLoaded", () => {
-    const searchBtn = document.getElementById("searchBtn");
-    const searchInput = document.getElementById("searchInput");
-    const resultsDiv = document.getElementById("results");
-  
-    let travelData = [];
-  
-    // 1. Fetch JSON con datos de recomendaciones
-    fetch("travel_recommendation_api.json")
-      .then(response => response.json())
-      .then(data => {
-        travelData = data;
-        console.log("Datos cargados:", travelData); // ✅ Verificar en consola
-      })
-      .catch(error => console.error("Error al cargar JSON:", error));
-  
-    // 2. Acción al hacer click en Buscar
-    searchBtn.addEventListener("click", () => {
-      const keyword = searchInput.value.toLowerCase().trim(); // normalizar búsqueda
-      resultsDiv.innerHTML = ""; // limpiar resultados previos
-  
-      if (!keyword) {
-        resultsDiv.innerHTML = "<p>Por favor ingresa un término de búsqueda.</p>";
-        return;
-      }
-  
-      let filteredResults = [];
-  
-      // 3. Filtrar según la palabra clave
-      if (keyword.includes("beach")) {
-        filteredResults = travelData.beaches || [];
-      } else if (keyword.includes("temple")) {
-        filteredResults = travelData.temples || [];
-      } else if (keyword.includes("country")) {
-        filteredResults = travelData.countries || [];
-      }
-  
-      // 4. Mostrar resultados en el DOM
-      if (filteredResults.length > 0) {
-        filteredResults.slice(0, 2).forEach(place => { // mostrar mínimo 2
-          const card = document.createElement("div");
-          card.classList.add("card");
-  
-          card.innerHTML = `
-            <img src="${place.imageUrl}" alt="${place.name}" />
-            <h3>${place.name}</h3>
-            <p>${place.description}</p>
-          `;
-  
-          resultsDiv.appendChild(card);
-        });
-      } else {
-        resultsDiv.innerHTML = "<p>No se encontraron resultados para esa búsqueda.</p>";
-      }
-    });
-  });
-  
-
-  // Seleccionamos los elementos
-const searchInput = document.getElementById("searchInput");
-const resultsContainer = document.getElementById("results");
-const clearBtn = document.getElementById("clearBtn");
-
-// Función para limpiar
-function clearResults() {
-  resultsContainer.innerHTML = ""; // Borra los resultados
-  searchInput.value = "";          // Limpia el campo de búsqueda
-}
-
-// Evento para el botón Clear
-clearBtn.addEventListener("click", clearResults);
