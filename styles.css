@@ -249,3 +249,16 @@ html {
   object-fit: cover;
   border-radius: 10px;
 }
+
+/* Ocultar contenedores de recomendaciones y resultados por defecto */
+#recommendation-results,
+#results {
+  display: none;
+}
+
+/* Estilos básicos para resultados cuando se muestran */
+#results .card,
+#recommendation-results .recommendation-card {
+  margin: 10px auto;
+  max-width: 320px;
+}

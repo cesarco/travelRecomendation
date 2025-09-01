@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await res.json();
       travelData = data;
       console.log('Datos cargados:', travelData);
-      displayRecommendations(data);
+  // No mostrar recomendaciones al cargar; se mostrarán al buscar
     } catch (err) {
       console.error('Error al cargar JSON:', err);
       if (resultsDiv) resultsDiv.innerHTML = '<p>Error al cargar datos.</p>';
@@ -76,20 +76,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!items || items.length === 0) {
       resultsDiv.innerHTML = '<p>No se encontraron resultados para esa búsqueda.</p>';
+      resultsDiv.style.display = 'block';
       return;
     }
 
-    items.slice(0, 8).forEach(place => {
-      const card = document.createElement('div');
-      card.className = 'card';
-      const imgSrc = (place.imageUrl && !place.imageUrl.includes('enter_your_image')) ? place.imageUrl : 'https://via.placeholder.com/320x200?text=No+Image';
-      card.innerHTML = `
-        <img src="${imgSrc}" alt="${place.name || ''}" />
-        <h3>${place.name || ''}</h3>
-        <p>${place.description || ''}</p>
-      `;
-      resultsDiv.appendChild(card);
-    });
+    // Mostrar solo uno (el primero) — el usuario pidió un solo resultado por nombre
+    const place = items[0];
+    const card = document.createElement('div');
+    card.className = 'card';
+    const imgSrc = (place.imageUrl && !place.imageUrl.includes('enter_your_image')) ? place.imageUrl : 'https://via.placeholder.com/320x200?text=No+Image';
+    card.innerHTML = `
+      <img src="${imgSrc}" alt="${place.name || ''}" />
+      <h3>${place.name || ''}</h3>
+      <p>${place.description || ''}</p>
+    `;
+    resultsDiv.appendChild(card);
+    resultsDiv.style.display = 'block';
   }
 
   // Lógica de búsqueda: reconoce palabras clave y búsqueda libre por nombre/descr.
@@ -131,7 +133,11 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function clearResults() {
-    if (resultsDiv) resultsDiv.innerHTML = '';
+    if (resultsDiv) {
+      resultsDiv.innerHTML = '';
+      resultsDiv.style.display = 'none';
+    }
+    if (recommendationResultsContainer) recommendationResultsContainer.style.display = 'none';
     if (searchInput) searchInput.value = '';
   }
 
