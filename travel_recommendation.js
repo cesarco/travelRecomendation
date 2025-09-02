@@ -84,8 +84,9 @@ document.addEventListener('DOMContentLoaded', () => {
     items.slice(0, 2).forEach(place => {
       const card = document.createElement('div');
       card.className = 'card';
+      console.log(place);
 
-      const imgSrc = (place.imageUrl && !place.imageUrl.includes('enter_your_image'))
+      const imgSrc = (place.imageUrl)
         ? place.imageUrl
         : 'https://via.placeholder.com/320x200?text=No+Image';
 
