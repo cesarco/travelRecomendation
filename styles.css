@@ -150,17 +150,20 @@ html {
 }
 
 .team-member {
-  background: rgba(255, 255, 255, 0.9);
-  padding: 15px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 18px;
   border-radius: 10px;
   text-align: center;
-  width: 180px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  width: 220px; /* más ancho para imagen y texto */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 .team-member img {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
   border-radius: 50%;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 .team-member h3 {
   margin: 10px 0 5px;
@@ -318,4 +321,16 @@ html {
 #recommendation-results .recommendation-card {
   margin: 10px auto;
   max-width: 320px;
+}
+
+@media (max-width: 720px) {
+  .team-member {
+    width: 160px;
+    padding: 12px;
+  }
+  .team-member img {
+    width: 90px;
+    height: 90px;
+    margin-bottom: 8px;
+  }
 }
