@@ -132,6 +132,42 @@ html {
   margin: 0 auto;
 }
 
+.team {
+  text-align: right; /* alineamos el título a la derecha */
+  margin: 40px 20px;
+}
+
+.team h2 {
+  margin-bottom: 20px;
+  font-size: 2rem;
+  color: #222;
+}
+
+.team-container {
+  display: flex;
+  justify-content: flex-end; /* manda todo el grupo a la derecha */
+  gap: 30px; /* espacio entre los miembros */
+}
+
+.team-member {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 15px;
+  border-radius: 10px;
+  text-align: center;
+  width: 180px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.team-member img {
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+.team-member h3 {
+  margin: 10px 0 5px;
+  font-size: 1.2rem;
+  color: #333;
+}
+
 /* Hero text */
 .hero-content {
   position: relative;
