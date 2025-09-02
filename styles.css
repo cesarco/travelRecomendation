@@ -223,17 +223,33 @@ html {
 
 .contact {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start; /* Títulos a la izquierda */
+  justify-content: space-between; /* separa izquierda y derecha */
+  align-items: flex-start; /* alinea arriba */
   padding: 40px;
+  gap: 40px; /* espacio entre texto e input */
   color: #fff;
 }
 
+.contact h1, 
+
+.contact .social-icons {
+  max-width: 400px; /* ancho máximo del bloque de texto */
+}
+
+.contact .social-icons {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  font-size: 1.5rem;
+}
+
 .contact-form {
-  margin-left: auto; /* mueve el formulario a la derecha */
-  width: 400px; /* ajusta el ancho */
-  background: rgba(0, 0, 0, 0.5); /* fondo semitransparente */
-  padding: 20px;
+  flex: 1;
+  max-width: 400px; /* controla el ancho */
+  margin-left: auto; /* asegura que se vaya a la derecha */
+  background: rgba(0, 0, 0, 0.6);
+  padding: 35px;
   border-radius: 10px;
 }
 
@@ -267,6 +283,7 @@ html {
 .contact-form button:hover {
   background: #00796b;
 }
+
 
 .recommendations-container {
   display: grid;

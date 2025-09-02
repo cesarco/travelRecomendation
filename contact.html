@@ -12,37 +12,37 @@
 
 <body>
   <!-- Navbar -->
-  <nav class="navbar">
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
     <div class="logo">
-      <img src="https://img.icons8.com/ios-filled/50/ffffff/airplane-take-off.png" alt="Logo">
+      <img src="https://img.icons8.com/ios-filled/50/ffffff/airplane-take-off.png" alt="TravelBloom logo">
       TravelBloom
     </div>
     <ul>
       <li><a href="./travel_recommendation.html">Home</a></li>
       <li><a href="about.html">About Us</a></li>
-      <li><a href="contact.html">Contact Us</a></li>
+      <li><a href="contact.html" aria-current="page">Contact Us</a></li>
     </ul>
     <div class="search-container">
-      <input id="searchInput" type="text" placeholder="Enter a destination or keyword" aria-label="Search destinations">
-      <button id="searchBtn" class="search-btn">Search</button>
+      <label for="searchInput" class="visually-hidden">Search destinations</label>
+      <input id="searchInput" type="search" placeholder="Enter a destination or keyword" aria-label="Search destinations">
+      <button id="searchBtn" class="search-btn" type="button">Search</button>
       <button id="clearBtn" class="clear-btn" type="button">Reset</button>
     </div>
   </nav>
-
   <!-- Contact Section -->
   <div class="page-bg">
-    <section class="contact">
-      <h1>CONTACT US</h1>
+    <section class="contact" aria-labelledby="contact-heading">
+      <h1 id="contact-heading">CONTACT US</h1>
       <p>Get in touch</p>
 
-      <div class="social-icons">
-        <a href="#"><i class="fab fa-twitter"></i></a>
-        <a href="#"><i class="fab fa-facebook"></i></a>
-        <a href="#"><i class="fab fa-instagram"></i></a>
-        <a href="#"><i class="fab fa-youtube"></i></a>
+      <div class="social-icons" role="navigation" aria-label="Social media links">
+        <a href="#" aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+        <a href="#" aria-label="Facebook"><i class="fab fa-facebook" aria-hidden="true"></i></a>
+        <a href="#" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+        <a href="#" aria-label="YouTube"><i class="fab fa-youtube" aria-hidden="true"></i></a>
       </div>
 
-      <form class="contact-form">
+      <form class="contact-form" action="#" method="post" aria-label="Contact form">
         <label for="name">Name</label>
         <input type="text" id="name" name="name" placeholder="Your name" required>
 
@@ -52,10 +52,11 @@
         <label for="message">Message</label>
         <textarea id="message" name="message" rows="5" placeholder="Write your message here..." required></textarea>
 
-        <button type="submit">Submit</button>
+        <button type="submit" aria-label="Submit contact form">Submit</button>
       </form>
     </section>
 
+  </div>
   </div>
 
 </body>
