@@ -222,47 +222,50 @@ html {
 }
 
 .contact {
-  text-align: center;
-  padding: 60px 20px;
-  background: url("images/contact-bg.jpg") no-repeat center center;
-  background-size: cover;
-  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Títulos a la izquierda */
+  padding: 40px;
+  color: #fff;
 }
 
 .contact-form {
-  max-width: 500px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
+  margin-left: auto; /* mueve el formulario a la derecha */
+  width: 400px; /* ajusta el ancho */
+  background: rgba(0, 0, 0, 0.5); /* fondo semitransparente */
+  padding: 20px;
+  border-radius: 10px;
 }
 
 .contact-form label {
-  text-align: left;
-  margin: 10px 0 5px;
+  display: block;
+  margin-top: 10px;
   font-weight: bold;
 }
 
 .contact-form input,
 .contact-form textarea {
-  padding: 10px;
-  border-radius: 5px;
-  border: none;
-  margin-bottom: 15px;
   width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: none;
+  border-radius: 5px;
 }
 
 .contact-form button {
+  margin-top: 15px;
   padding: 12px;
-  background: teal;
-  color: white;
+  width: 100%;
+  background: #009688;
   border: none;
+  color: white;
+  font-size: 1rem;
   border-radius: 5px;
-  font-size: 16px;
   cursor: pointer;
 }
 
 .contact-form button:hover {
-  background: darkcyan;
+  background: #00796b;
 }
 
 .recommendations-container {
