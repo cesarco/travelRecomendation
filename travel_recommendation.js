@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const data = await res.json();
       travelData = data;
       console.log('Datos cargados:', travelData);
-  // No mostrar recomendaciones al cargar; se mostrarán al buscar
+      // No mostrar recomendaciones al cargar; se mostrarán al buscar
     } catch (err) {
       console.error('Error al cargar JSON:', err);
       if (resultsDiv) resultsDiv.innerHTML = '<p>Error al cargar datos.</p>';
@@ -80,19 +80,27 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
 
-    // Mostrar solo uno (el primero) — el usuario pidió un solo resultado por nombre
-    const place = items[0];
-    const card = document.createElement('div');
-    card.className = 'card';
-    const imgSrc = (place.imageUrl && !place.imageUrl.includes('enter_your_image')) ? place.imageUrl : 'https://via.placeholder.com/320x200?text=No+Image';
-    card.innerHTML = `
+    // Mostrar hasta 2 resultados
+    items.slice(0, 2).forEach(place => {
+      const card = document.createElement('div');
+      card.className = 'card';
+
+      const imgSrc = (place.imageUrl && !place.imageUrl.includes('enter_your_image'))
+        ? place.imageUrl
+        : 'https://via.placeholder.com/320x200?text=No+Image';
+
+      card.innerHTML = `
       <img src="${imgSrc}" alt="${place.name || ''}" />
       <h3>${place.name || ''}</h3>
       <p>${place.description || ''}</p>
     `;
-    resultsDiv.appendChild(card);
+
+      resultsDiv.appendChild(card);
+    });
+
     resultsDiv.style.display = 'block';
   }
+
 
   // Lógica de búsqueda: reconoce palabras clave y búsqueda libre por nombre/descr.
   function performSearch(raw) {

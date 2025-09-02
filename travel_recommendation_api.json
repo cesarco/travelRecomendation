@@ -73,7 +73,7 @@
     {
       "id": 2,
       "name": "Copacabana Beach, Brazil",
-      "imageUrl": "enter_your_image_for_copacabana.jpg",
+      "imageUrl": "./enter_your_image_for_sydney.jpg",
       "description": "A famous beach in Rio de Janeiro, Brazil, with a vibrant atmosphere and scenic views."
     }
   ]
